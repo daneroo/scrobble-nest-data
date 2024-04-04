@@ -18,9 +18,6 @@ This failed with the following error: `Error 400: redirect_uri_mismatch`
 ```bash
 # https://nestservices.google.com/partnerconnections/project-id/auth?redirect_uri=https://www.google.com&access_type=offline&prompt=consent&client_id=oauth2-client-id&response_type=code&scope=https://www.googleapis.com/auth/sdm.service
 
-https://nestservices.google.com/partnerconnections/16de9570-1d6e-4b63-aed1-0eefe81fb73a/auth?redirect_uri=https://www.google.com&access_type=offline&prompt=consent&client_id=507097740414-h5dcju4gu9kl9l21vla26ul6k4ptq970.apps.googleusercontent.com&response_type=code&scope=https://www.googleapis.com/auth/sdm.service
-https://nestservices.google.com/partnerconnections/16de9570-1d6e-4b63-aed1-0eefe81fb73a/auth?redirect_uri=https://www.google.com&access_type=offline&prompt=consent&client_id=507097740414-h5dcju4gu9kl9l21vla26ul6k4ptq970.apps.googleusercontent.com&response_type=code&scope=https://www.googleapis.com/auth/sdm.service
-
 ```
 
 ## References
