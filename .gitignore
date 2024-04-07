@@ -1,1 +1,4 @@
-credentials.json
+app-script/globalVariables.js
+# Ignore everything in the secrets directory, except the README.md file
+secrets/*
+!secrets/README.md
