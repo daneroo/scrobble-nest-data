@@ -1,0 +1,19 @@
+{
+  "name": "scrobble-nest-data",
+  "version": "1.0.0",
+  "description": "Call the nest API to fetch device data",
+  "main": "src/index.mjs",
+  "scripts": {
+    "test": "pnpm test:node && pnpm test:bun && pnpm test:deno",
+    "test:node": "node --test src/**/*.node_test.mjs",
+    "test:bun": "bun test src/**/*.bun_test.mjs",
+    "test:deno": "deno test --allow-write --allow-read --allow-env src/**/*.deno_test.mjs"
+  },
+  "keywords": [],
+  "author": "Daniel Lauzon (@daneroo)",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bun": "^1.0.12",
+    "@types/node": "^20.12.5"
+  }
+}

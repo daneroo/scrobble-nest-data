@@ -1,4 +1,6 @@
+# globalVariables.js is a file that contains secrets. OUCH!
 app-script/globalVariables.js
 # Ignore everything in the secrets directory, except the README.md file
 secrets/*
 !secrets/README.md
+node_modules/
