@@ -4,7 +4,10 @@
 
 - [x] Get the access token locally
   - [ ] refine the local lifecycle
-    - [ ] store the refresh/access tokens in a file - including the expiration time, and add issue timestamp
+    - [ ] Move source to `src/` directory
+    - [ ] Move all configs to secrets/JSON files - AND - env vars
+    - [ ] store the refresh/access tokens in a separate file - including the expiration time, and add issue timestamp
+    - [ ] callback server (node.js, then bun, then Deno)
 - [ ] Run from GH Actions
 - [ ] Make the code runtime agnostic
 
@@ -32,6 +35,10 @@ This failed with the following error: `Error 400: redirect_uri_mismatch`
 ## Runtime agnostic
 
 ```bash
+node src/index.mjs
+bun run src/index.mjs
+deno run --allow-net --allow-env src/index.mjs
+
 node validate.mjs
 bun run validate.mjs
 deno run --allow-net --allow-env validate.mjs

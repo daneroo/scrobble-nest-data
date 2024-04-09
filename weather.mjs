@@ -1,8 +1,9 @@
 await main();
 async function main() {
-  const OPENWATHERMAP_KEY = process.env.OPENWATHERMAP_KEY;
-  const OPENWATHERMAP_LAT = process.env.OPENWATHERMAP_LAT;
-  const OPENWATHERMAP_LON = process.env.OPENWATHERMAP_LON;
+  // use universalGetEnv(key) instead of process.env[key] to get environment variables
+  const OPENWATHERMAP_KEY = universalGetEnv("OPENWATHERMAP_KEY");
+  const OPENWATHERMAP_LAT = universalGetEnv("OPENWATHERMAP_LAT");
+  const OPENWATHERMAP_LON = universalGetEnv("OPENWATHERMAP_LON");
 
   if (!OPENWATHERMAP_KEY || !OPENWATHERMAP_LAT || !OPENWATHERMAP_LON) {
     console.error(
@@ -122,3 +123,13 @@ async function retrieveWeather(appid, lat, lon) {
   "cod": 200
 }
 */
+
+// This function will get an enviroment variable's value on node,deno and bun.
+function universalGetEnv(key) {
+  if (typeof process !== "undefined") {
+    return process.env[key];
+  } else if (typeof Deno !== "undefined") {
+    return Deno.env.get(key);
+  }
+  throw new Error("Unsupported runtime");
+}

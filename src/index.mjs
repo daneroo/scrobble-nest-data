@@ -1,7 +1,15 @@
+import { parseCommandLineArgs } from './parseArgs.mjs';
+import { getCommandLineArgs } from './universal/args.mjs';
 import { getEnv } from './universal/env.mjs';
 
 await main();
 async function main() {
+  // Example usage of the parseCommandLineArgs function
+  const options = parseCommandLineArgs(getCommandLineArgs());
+  console.log(options);
+  if (options) {
+    return;
+  }
   // use universalGetEnv(key) instead of process.env[key] to get environment variables
   const OPENWATHERMAP_KEY = getEnv("OPENWATHERMAP_KEY");
   const OPENWATHERMAP_LAT = getEnv("OPENWATHERMAP_LAT");
