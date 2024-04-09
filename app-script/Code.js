@@ -225,9 +225,6 @@ function retrieveWeather() {
   const weatherArray = [];
 
   try {
-    // TODO(daneroo):
-    // My key from: https://home.openweathermap.org/api_keys 72b49cf113998a4f482a1e3b343b7e66
-
     const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
     const params = {
       lat: OPENWATHERMAP_LAT,
