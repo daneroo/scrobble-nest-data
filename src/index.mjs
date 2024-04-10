@@ -1,12 +1,15 @@
-import { parseCommandLineArgs } from './parseArgs.mjs';
-import { getCommandLineArgs } from './universal/args.mjs';
-import { getEnv } from './universal/env.mjs';
+import { getConfig } from "./config.mjs";
+import { parseCommandLineArgs } from "./parseArgs.mjs";
+import { getCommandLineArgs } from "./universal/args.mjs";
+import { getEnv } from "./universal/env.mjs";
 
 await main();
 async function main() {
   // Example usage of the parseCommandLineArgs function
   const options = parseCommandLineArgs(getCommandLineArgs());
-  console.log(options);
+  console.log({ options });
+  const config = await getConfig();
+  console.log({ config });
   if (options) {
     return;
   }

@@ -19,4 +19,4 @@ ARGS="$@"
 # Execute each command directly
 checkAndInvoke "node src/index.mjs ${ARGS}"
 checkAndInvoke "bun src/index.mjs ${ARGS}"
-checkAndInvoke "deno run --allow-net --allow-env src/index.mjs ${ARGS}"
+checkAndInvoke "deno run --allow-net --allow-env --allow-read src/index.mjs ${ARGS}"
