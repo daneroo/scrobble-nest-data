@@ -2,86 +2,95 @@
 // and (overridden by) environment variables.
 // This is to allow for easier configuration management in a CI/CD pipeline.
 
-import { getEnv } from "./universal/env.mjs";
+import { z } from "zod";
+
+import { parse } from "@std/jsonc";
+
 import { readFile } from "./universal/file.mjs";
 
-export async function getConfig() {
-  // relative to repo root (where program is run from)
-  // could later be configured by command line argument
-  const jsonAppConfigFilename = "./secrets/app-credentials.json";
-
-  const configFromJSON = await readJSONFile(jsonAppConfigFilename);
-  console.log({ configFromJSON });
-  function overrideWithEnv(keyName, jsonValue, envValue) {
-    if (envValue) {
-      if (jsonValue) {
-        console.log(
-          `Overriding JSON value for ${keyName} key with environment value: ${envValue}`
-        );
-      }
-      return envValue;
-    }
-    if (!jsonValue) {
-      console.error("Missing value for key: " + keyName);
-      return "";
-    }
-    return jsonValue;
-  }
-  const config = {
-    openWeatherMap: {
-      key: overrideWithEnv(
-        "openWeatherMap.key",
-        configFromJSON.openWeatherMap?.key,
-        getEnv("OPENWATHERMAP_KEY")
-      ),
-      lat: "",
-      lon: "",
-    },
-    nestDeviceAccess: {
-      // from https://console.nest.google.com/device-access/project-list
-      projectId: "",
-    },
-    gcpOAuth2: {
-      // From GCP / APIs & Services / Credentials / OAuth 2.0 Client IDs (Web Application)
-      // GCP_OAUTH2_CLIENT_ID=XXX.apps.googleusercontent.com
-      // GCP_OAUTH2_CLIENT_SECRET=GOCSPX-YYYY
-      clientId: "",
-      clientSecret: "",
-      refreshToken: "",
-    },
-  };
-  return config;
-
-  const OPENWATHERMAP_KEY = getEnv("OPENWATHERMAP_KEY");
-  const OPENWATHERMAP_LAT = getEnv("OPENWATHERMAP_LAT");
-  const OPENWATHERMAP_LON = getEnv("OPENWATHERMAP_LON");
-
-  if (!OPENWATHERMAP_KEY || !OPENWATHERMAP_LAT || !OPENWATHERMAP_LON) {
-    console.error(
-      "Missing OPENWATHERMAP_KEY or OPENWATHERMAP_LAT or OPENWATHERMAP_LON environment variable"
-    );
-    console.info(
-      "Perhaps you need to run:\nset -a && source secrets/OPENWATHERMAP.env && set +a"
-    );
-    // return;
-  }
-  console.log("Validated environment variables");
-  return {
-    OPENWATHERMAP_KEY,
-    OPENWATHERMAP_LAT,
-    OPENWATHERMAP_LON,
-  };
+export async function getAppConfig() {
+  return getConfigFromFileWithSchema(
+    "./secrets/app-credentials.json",
+    appConfigSchema
+  );
 }
 
-// Parse a JSON file and return its contents as an object
+export async function getUserRefreshToken() {
+  return getConfigFromFileWithSchema(
+    "./secrets/user-refresh-token.json",
+    userRefreshTokenSchema
+  );
+}
+
+export async function getUserAccessToken() {
+  return getConfigFromFileWithSchema(
+    "./secrets/user-access-token.json",
+    userAccessTokenSchema
+  );
+}
+
+// re-used schema definitions
+const numericStringSchema = z
+  .string()
+  .refine((value) => !isNaN(Number(value)), {
+    message: "Must be a string containing a valid number",
+  });
+
+const trimmedNonEmptyStringSchema = z
+  .string()
+  // Check that the string is not empty
+  .min(1, { message: "String must not be empty." })
+  // Ensure no leading or trailing whitespace
+  .refine((value) => value === value.trim(), {
+    message: "String must not contain leading or trailing whitespace.",
+  });
+
+const appConfigSchema = z.object({
+  openWeatherMap: z.object({
+    key: trimmedNonEmptyStringSchema,
+    lat: numericStringSchema,
+    lon: numericStringSchema,
+  }),
+  nestDeviceAccess: z.object({
+    projectId: trimmedNonEmptyStringSchema,
+  }),
+  gcpOAuth2: z.object({
+    clientId: trimmedNonEmptyStringSchema,
+    clientSecret: trimmedNonEmptyStringSchema,
+    refreshToken: trimmedNonEmptyStringSchema,
+  }),
+});
+
+const userRefreshTokenSchema = z.object({
+  refreshToken: trimmedNonEmptyStringSchema,
+});
+const userAccessTokenSchema = z.object({
+  accessToken: trimmedNonEmptyStringSchema,
+  expiresAt: z.string().datetime(), //enforces ISO 8601
+});
+
+async function getConfigFromFileWithSchema(jsonConfigFilename, schema) {
+  const configFromJSON = await readJSONCFile(jsonConfigFilename);
+  const result = schema.safeParse(configFromJSON);
+  if (result.success) {
+    return result.data;
+  } else {
+    // console.error(result.error);
+    console.error(
+      `Failed to validate app config JSON file: ${jsonConfigFilename}\n${result.error}`
+    );
+    return {};
+  }
+}
+
+// Parse a JSON(C) file and return its contents as an object
 // return empty object if any error occurs
 // send error messages to console.error (stderr)
-async function readJSONFile(filename) {
+async function readJSONCFile(filename) {
   try {
-    console.log(`Loading JSON file: ${filename}`);
     const txt = await readFile(filename);
     try {
-      return JSON.parse(txt);
+      return parse(txt);
     } catch (err) {
       console.error(`Failed to parse JSON file (${filename}): ${err}`);
     }

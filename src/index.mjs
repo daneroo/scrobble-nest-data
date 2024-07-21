@@ -1,4 +1,8 @@
-import { getConfig } from "./config.mjs";
+import {
+  getAppConfig,
+  getUserAccessToken,
+  getUserRefreshToken,
+} from "./config.mjs";
 import { parseCommandLineArgs } from "./parseArgs.mjs";
 import { getCommandLineArgs } from "./universal/args.mjs";
 import { getEnv } from "./universal/env.mjs";
@@ -8,8 +12,12 @@ async function main() {
   // Example usage of the parseCommandLineArgs function
   const options = parseCommandLineArgs(getCommandLineArgs());
   console.log({ options });
-  const config = await getConfig();
+  const config = await getAppConfig();
   console.log({ config });
+  const refreshToken = await getUserRefreshToken();
+  console.log({ refreshToken });
+  const accessToken = await getUserAccessToken();
+  console.log({ accessToken });
   if (options) {
     return;
   }

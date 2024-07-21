@@ -5,14 +5,62 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@std/jsonc':
+    specifier: npm:@jsr/std__jsonc@^0.221.0
+    version: /@jsr/std__jsonc@0.221.0
   '@types/bun':
     specifier: ^1.0.12
     version: 1.0.12
   '@types/node':
     specifier: ^20.12.5
     version: 20.12.5
+  zod:
+    specifier: ^3.22.4
+    version: 3.22.4
 
 packages:
+
+  /@jsr/std__assert@0.221.0:
+    resolution: {integrity: sha512-80CaXzJbEzFR3ywnCnht3JJatMSuJrTltVbNlOgsSwAN19zDKgYocBglG03WwwzFUaH+sMcUFvVX775ISauvxA==, tarball: https://npm.jsr.io/~/7/@jsr/std__assert/0.221.0.tgz}
+    dependencies:
+      '@jsr/std__fmt': 0.221.0
+    dev: false
+
+  /@jsr/std__bytes@0.221.0:
+    resolution: {integrity: sha512-oRdSg5sqjuKJww8IZcegKLExH85NupGMD8oSoFkkcdlLWcqh7EEyAnfFdFwLHigU6V6m2QzGURmggI6zUEd+Cg==, tarball: https://npm.jsr.io/~/7/@jsr/std__bytes/0.221.0.tgz}
+    dev: false
+
+  /@jsr/std__fmt@0.221.0:
+    resolution: {integrity: sha512-fV88P+sJBWY5Z5CxYH8MAebL6ZYCoCsm3/hGi2yDDXP7lj8qsLM3IxcUrf472oZ47vvXWbj3o/0EJcPvJoA49A==, tarball: https://npm.jsr.io/~/7/@jsr/std__fmt/0.221.0.tgz}
+    dev: false
+
+  /@jsr/std__io@0.221.0:
+    resolution: {integrity: sha512-uy6thB3xp6QRuL+lX7EOvYbSuc6R7FudVFXe9l7Olld6a7ad/1Ett3VrRNl6iP5kYAjvZEMEgsmQYjKuvtD0gw==, tarball: https://npm.jsr.io/~/7/@jsr/std__io/0.221.0.tgz}
+    dependencies:
+      '@jsr/std__assert': 0.221.0
+      '@jsr/std__bytes': 0.221.0
+    dev: false
+
+  /@jsr/std__json@0.221.0:
+    resolution: {integrity: sha512-t6oQ7El63w68gOt2p3IgKdA47/DWEvLkqRg2561LUa49rdFG9BOE+F5BzGwEzeq8eW0EkCcxBh/26Pb3DZkUeg==, tarball: https://npm.jsr.io/~/7/@jsr/std__json/0.221.0.tgz}
+    dependencies:
+      '@jsr/std__streams': 0.221.0
+    dev: false
+
+  /@jsr/std__jsonc@0.221.0:
+    resolution: {integrity: sha512-zUTo0YTQbBVKmtuqDm0uOCk9Z7TvmXZS1/KEjRQpgfl1WqMks/zqxB8fA2VOl6iQwKt75k/lxWUyRFBomd+H5Q==, tarball: https://npm.jsr.io/~/7/@jsr/std__jsonc/0.221.0.tgz}
+    dependencies:
+      '@jsr/std__assert': 0.221.0
+      '@jsr/std__json': 0.221.0
+    dev: false
+
+  /@jsr/std__streams@0.221.0:
+    resolution: {integrity: sha512-y0Mp5C08Ox/kyHicVriET/UcwYO0p8i/Gr+M/YY+qi+EwVEmtOLsIHBQdatfrk0u7lD3bKiC1tS6n47jY5Xs8w==, tarball: https://npm.jsr.io/~/7/@jsr/std__streams/0.221.0.tgz}
+    dependencies:
+      '@jsr/std__assert': 0.221.0
+      '@jsr/std__bytes': 0.221.0
+      '@jsr/std__io': 0.221.0
+    dev: false
 
   /@types/bun@1.0.12:
     resolution: {integrity: sha512-qPb5FcygbpSS1NDBjWyQCWeI9kKXwSYSR1Enu7yb+gMXgFwGMhlyOvgV/7FGrdvAjlSXWRY6IDepos7k8WzAtQ==}
@@ -47,4 +95,8 @@ packages:
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: false
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: false

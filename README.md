@@ -4,12 +4,23 @@
 
 - [x] Get the access token locally
   - [ ] refine the local lifecycle
-    - [ ] Move source to `src/` directory
-    - [ ] Move all configs to secrets/JSON files - AND - env vars
-    - [ ] store the refresh/access tokens in a separate file - including the expiration time, and add issue timestamp
-    - [ ] callback server (node.js, then bun, then Deno)
+    - [x] Move source to `src/` directory
+    - [x] Move all configs to secrets/JSON files
+    - [ ] allow env vars
+      - [ ] store the refresh/access tokens in a separate file - including the expiration time, and add issue timestamp
+    - [ ] one-callback-server (node.js, then bun, then Deno)
+- [ ] Universal test runner
 - [ ] Run from GH Actions
 - [ ] Make the code runtime agnostic
+
+## Universal Test harness/runner
+
+```txt
+In the file: packages/universal-file/index.mjs we use dynamic ESM imports So that this file can be imported by multiple run-times (bun, deno,node) CAn we write a similarly useful test file that will work: "scripts": { "test": "pnpm test:node && pnpm test:bun && pnpm test:deno", "test:node": "node --test src/**/*.node_test.mjs", "test:bun": "bun test src/**/*.bun_test.mjs", "test:deno": "deno test --allow-write --allow-read --allow-env src/**/*.deno_test.mjs" }, But combine all three test files, to work with each test runner above Actually it would be best if we could extract a single universal test module that could be used in all my test files import { test, assert, (perhaps describe)} from 'universal/test.mjs'
+
+Make sure you consider where the underlying test,describe and assert comefrom, and that their signatures will be compatible.
+We should declare the JSDOc for our common test,describe,assert methods/modules
+```
 
 ## Setup
 
@@ -34,19 +45,24 @@ This failed with the following error: `Error 400: redirect_uri_mismatch`
 
 ## Runtime agnostic
 
+### adding dependencies
+
+````bash
+# from jsr (adds an entry into .npmrc)
+pnpm dlx jsr add @std/jsonc
+deno add @std/jsonc
+
+# from npm
+pnpm add zod
+deno add npm:zod
+
 ```bash
+./runAll.sh
+# or
 node src/index.mjs
 bun run src/index.mjs
 deno run --allow-net --allow-env src/index.mjs
-
-node validate.mjs
-bun run validate.mjs
-deno run --allow-net --allow-env validate.mjs
-
-node weather.mjs
-bun run weather.mjs
-deno run --allow-net --allow-env weather.mjs
-```
+````
 
 ## References
 
